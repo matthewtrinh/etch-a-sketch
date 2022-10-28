@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etch-a-Sketch</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+    <script>
+
+        const btn = document.createElement('button');
+        btn.textContent = 'Change grid size';
+        document.body.appendChild(btn);
+        createGrid(16);
+
+        btn.addEventListener('click', newGrid);
+
+        function newGrid() {
+            const len = Number(prompt("Please enter grid size:"));
+
+            deleteGrid();
+            createGrid(len);
+        }
+
+        function deleteGrid() {
+            const rows = document.querySelectorAll('.row');
+            rows.forEach( row => document.body.removeChild(row) );
+        }
+
+        function createGrid(size) {
+            for(let i = 0; i < size; i++) {
+            const row = document.createElement('div');
+            row.classList.add('row');
+
+            for(let j = 0; j < size; j++) {
+                const square = document.createElement('div');
+                square.classList.add('square');
+
+                row.appendChild(square);
+            }
+
+            document.body.appendChild(row);
+            }
+            colorSquares();
+        }
+
+
+        function colorSquares() {
+            const squares = document.querySelectorAll('.square');
+            squares.forEach( square => square.addEventListener('mouseover', changeColor) );
+        }
+
+        function changeColor() {
+            this.style.backgroundColor = 'orange';
+        }
+    </script>
+</body>
+</html>
