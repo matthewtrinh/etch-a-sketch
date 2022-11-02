@@ -8,27 +8,61 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
+    <div class="container">
+        <h1>Etch-a-Sketch</h1>
+        <div id="grid"></div>
+        <div id="menu">
+            <span class="circle"></span>
+            <button id="clear">Erase</button>
+            <div>
+                <div class="label">Color</div>
+                <input id="colorPicker" type="color" value="#333333">
+            </div>
+            <div id="slider">
+                <input id="sizeSlider" type="range" value="16" min="12" max="64">
+            </div>
+            <span class="circle"></span>
+        </div>
+    </div>
 
     <script>
+        let color = document.querySelector(`#colorPicker`).getAttribute(`value`);
 
-        const btn = document.createElement('button');
-        btn.textContent = 'Change grid size';
-        document.body.appendChild(btn);
-        createGrid(16);
+        const colorPicker = document.querySelector(`#colorPicker`);
+        colorPicker.addEventListener('input', event => {
+            color = event.target.value;
+        }, false);
 
+        const slider = document.querySelector(`#sizeSlider`);
+        slider.addEventListener('input', event => {
+            const size = event.target.value;
+            slider.setAttribute(`value`, size);
+            dimensions.textContent = `${slider.getAttribute('value')} x ${slider.getAttribute('value')}`;
+            newGrid();
+        });
+
+        const dimensions = document.createElement(`div`);
+        dimensions.setAttribute(`id`, `dimensions`);
+        dimensions.textContent = `${slider.getAttribute('value')} x ${slider.getAttribute('value')}`;
+
+        document.querySelector(`#slider`).insertBefore(dimensions,slider);
+
+        createGrid(slider.getAttribute(`value`));
+
+        const btn = document.querySelector(`button`);
         btn.addEventListener('click', newGrid);
 
         function newGrid() {
-            const len = Number(prompt("Please enter grid size:"));
-
+            const size = slider.getAttribute(`value`);
             deleteGrid();
-            createGrid(len);
+            createGrid(size);
         }
 
         function deleteGrid() {
             const rows = document.querySelectorAll('.row');
-            rows.forEach( row => document.body.removeChild(row) );
+            const grid = document.querySelector(`#grid`);
+
+            rows.forEach( row => grid.removeChild(row) );
         }
 
         function createGrid(size) {
@@ -43,7 +77,8 @@
                 row.appendChild(square);
             }
 
-            document.body.appendChild(row);
+            const grid = document.querySelector(`#grid`);
+            grid.appendChild(row);
             }
             colorSquares();
         }
@@ -55,8 +90,10 @@
         }
 
         function changeColor() {
-            this.style.backgroundColor = 'orange';
+            this.style.backgroundColor = color;
         }
+
+        
     </script>
 </body>
 </html>
